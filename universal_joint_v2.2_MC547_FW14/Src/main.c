@@ -206,6 +206,8 @@ typedef struct {
 
 	int32_t current_mechanical_rotation;
 	int32_t current_mechanical_position;
+
+
 	int32_t previous_mechanical_position;
 
 	int32_t current_electric_rotation;
@@ -214,9 +216,9 @@ typedef struct {
 	int16_t previous_electric_position;
 	double current_joint_position_in_rad;
 
-	int16_t current_motor_speed_in_int;
+//	int16_t current_motor_speed_in_int;
 
-	double  current_motor_speed_in_rads;
+//	double  current_motor_speed_in_rads;
 
 	double  current_joint_speed_in_rads;
 
@@ -226,7 +228,7 @@ typedef struct {
 	double  current_voltage;
 
 	uint16_t current_ma730_value;
-	uint16_t previous_ma730_value;
+//	uint16_t previous_ma730_value;
 	bool     ma730_is_running;
 
 	uint8_t errors;
@@ -247,7 +249,7 @@ typedef struct {
 // Calibrations parameters -----------------------------
 #define SECTOR_SIZE 					(uint16_t) 5
 #define POLE_PAIRS 						(uint16_t) 14
-#define GEAR_RATIO 						(uint16_t) 120
+#define GEAR_RATIO 						(uint16_t) 121
 #else
 #endif
 /* USER CODE END PD */
@@ -320,7 +322,7 @@ volatile MotorStatus_t 	g_motor_status =
 	.warnings = 0,
 	.errors = 0,
 	.current_ma730_value = 0,
-	.previous_ma730_value = 0,
+//	.previous_ma730_value = 0,
 	.ma730_is_running = false,
 };
 
@@ -1174,7 +1176,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			{
 				g_motor_status.current_mechanical_rotation--;
 			}
-			g_motor_status.current_encoder_position = g_motor_status.current_mechanical_rotation * ENCODER_M1.PulseNumber + g_motor_status.current_mechanical_position;
 
 			// READ SPEED
 			g_motor_status.current_encoder_speed = ENCODER_M1._Super.hAvrMecSpeedUnit;
@@ -1189,12 +1190,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 			// ERRORS:
 			// 1. SPEED  (pi/2 rads)
-			if (g_motor_status.current_joint_speed_in_rads > M_PI_2 || g_motor_status.current_joint_speed_in_rads < -1 * M_PI_2)
-			{
-				// STOP MOTOR - SPEED IS TO HIGH
-				g_motor_status.errors = g_motor_status.errors | JOINT_JOINT_SPEED_TO_HIGH;
-				FSM_Activate_State(FSM_FAULT_REACTION_ACTIVE);
-			}
+//			if (g_motor_status.current_joint_speed_in_rads > M_PI_2 || g_motor_status.current_joint_speed_in_rads < -1 * M_PI_2)
+//			{
+//				// STOP MOTOR - SPEED IS TO HIGH
+//				g_motor_status.errors = g_motor_status.errors | JOINT_JOINT_SPEED_TO_HIGH;
+//				FSM_Activate_State(FSM_FAULT_REACTION_ACTIVE);
+//			}
 			// 2. TORQUE (256 Nm)
 			// 3. TEMP
 
@@ -1235,6 +1236,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		if (g_timer_counter % 10 == 0)
 		{
 			g_counter_1000hz++;
+
+//			g_motor_status.current_mechanical_rotation = ENCODER_M1._Super.wMecAngle / 65535;
+//			g_motor_status.current_mechanical_position = ENCODER_M1._Super.wMecAngle % 65535;
+
+			g_motor_status.current_encoder_position = g_motor_status.current_mechanical_rotation * ENCODER_M1.PulseNumber + g_motor_status.current_mechanical_position;
+
 			g_motor_status.current_encoder_position_in_rad = M_TWOPI * (double) g_motor_status.current_encoder_position / ENCODER_M1.PulseNumber;
 			g_motor_status.current_joint_position_in_rad = g_motor_status.current_encoder_position_in_rad / g_joint_configuration.gear_ratio + g_motor_status.current_encoder_position_offset_in_rad;
 
@@ -1299,7 +1306,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				if (g_counter_1hz > 1) // wait 1 sec to analyse data
 				{
 					g_motor_status.ma730_is_running = true;
-					g_motor_status.previous_ma730_value = g_motor_status.current_ma730_value;
+//					g_motor_status.previous_ma730_value = g_motor_status.current_ma730_value;
 //					g_motor_status.current_ma730_value = (g_MA730_read_buffer >> 2) & 0b0011111111111111;
 					MA730_ReadAngle();
 					g_motor_status.current_ma730_value = g_ma730.angle;
@@ -1538,20 +1545,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //					volatile int d=64000; while(d>0) { d--; }
 
 					// Configuration
-					flash_data.d16[0] = g_joint_configuration.pole_pairs;
-					flash_data.d16[1] = g_joint_configuration.gear_ratio;
-//					data = (g_joint_configuration.gear_ratio << 16) | g_joint_configuration.pole_pairs;
-//					if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, g_flash_address_configuration, data) != HAL_OK)
-					if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, g_flash_address_configuration, flash_data.d64) != HAL_OK)
+//					flash_data.d16[0] = g_joint_configuration.pole_pairs;
+//					flash_data.d16[1] = g_joint_configuration.gear_ratio;
+					data = (g_joint_configuration.gear_ratio << 16) | g_joint_configuration.pole_pairs;
+					if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, g_flash_address_configuration, data) != HAL_OK)
+//					if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, g_flash_address_configuration, flash_data.d64) != HAL_OK)
 					{
 						error = HAL_FLASH_GetError ();
 					}
 //					d=64000; while(d>0) { d--; }
 
-//					data = (g_joint_configuration.reachable_electrical_rotations << 16) | g_joint_configuration.calibration_sector_size;
-					flash_data.d16[0] = g_joint_configuration.calibration_sector_size;
-					flash_data.d16[1] = g_joint_configuration.reachable_electrical_rotations;
-					if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, g_flash_address_configuration + 8, flash_data.d64) != HAL_OK)
+					data = (g_joint_configuration.reachable_electrical_rotations << 16) | g_joint_configuration.calibration_sector_size;
+//					flash_data.d16[0] = g_joint_configuration.calibration_sector_size;
+//					flash_data.d16[1] = g_joint_configuration.reachable_electrical_rotations;
+					if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, g_flash_address_configuration + 8, data) != HAL_OK)
 					{
 						error = HAL_FLASH_GetError ();
 					}
@@ -2064,6 +2071,118 @@ void R3_2_GetPhaseCurrents( PWMC_Handle_t * pHdl, ab_t * Iab )
   pHandle->_Super.Ib = Iab->b;
   pHandle->_Super.Ic = -Iab->a - Iab->b;
 }
+
+///**
+//  * @brief  It set instantaneous rotor mechanical angle.
+//  *         As a consequence, timer counted is computed and updated.
+//  * @param  pHandle: handler of the current instance of the encoder component
+//  * @param  hMecAngle new value of rotor mechanical angle (s16degrees)
+//  * @retval none
+//  */
+//void ENC_SetMecAngle( ENCODER_Handle_t * pHandle, int16_t hMecAngle )
+//{
+//  TIM_TypeDef * TIMx = pHandle->TIMx;
+//
+//  uint16_t hAngleCounts;
+//  uint16_t hMecAngleuint;
+//
+//  pHandle->_Super.hMecAngle = hMecAngle;
+//  pHandle->_Super.hElAngle = hMecAngle * pHandle->_Super.bElToMecRatio;
+//
+//
+//  if ( hMecAngle < 0 )
+//  {
+//    hMecAngle *= -1;
+//    hMecAngleuint = 65535u - ( uint16_t )hMecAngle;
+//  }
+//  else
+//  {
+//    hMecAngleuint = ( uint16_t )hMecAngle;
+//  }
+//
+//  hAngleCounts = ( uint16_t )( ( ( uint32_t )hMecAngleuint *
+//                                 ( uint32_t )pHandle->PulseNumber ) / 65535u );
+//
+//  g_motor_status.previous_mechanical_position = g_motor_status.current_mechanical_position; // store old position
+//  g_motor_status.current_mechanical_position = ENCODER_M1.PreviousCapture; // 0 ... 14336 - 1 mechanical motor rotation
+//
+//  if (g_motor_status.previous_mechanical_position > ENCODER_M1.PulseNumber - 4000 && g_motor_status.current_mechanical_position  < 4000)
+//  {
+//	g_motor_status.current_mechanical_rotation++;
+//  }
+//  if (g_motor_status.current_mechanical_position  > ENCODER_M1.PulseNumber - 4000 && g_motor_status.previous_mechanical_position < 4000)
+//  {
+//	g_motor_status.current_mechanical_rotation--;
+//  }
+//  g_motor_status.current_encoder_position = g_motor_status.current_mechanical_rotation * ENCODER_M1.PulseNumber + g_motor_status.current_mechanical_position;
+//
+//  TIMx->CNT = ( uint16_t )( hAngleCounts );
+//
+//}
+///**
+//  * @brief  IRQ implementation of the TIMER ENCODER
+//  * @param  pHandle: handler of the current instance of the encoder component
+//  * @param  flag used to distinguish between various IRQ sources
+//  * @retval none
+//  */
+//void * ENC_IRQHandler( void * pHandleVoid )
+//{
+//  ENCODER_Handle_t * pHandle = ( ENCODER_Handle_t * ) pHandleVoid;
+//
+//  /*Updates the number of overflows occurred*/
+//  /* the handling of overflow error is done in ENC_CalcAvrgMecSpeedUnit */
+//  pHandle->TimerOverflowNb += 1u;
+//
+////g_motor_status.previous_mechanical_position = g_motor_status.current_mechanical_position; // store old position
+////g_motor_status.current_mechanical_position = ENCODER_M1.PreviousCapture; // 0 ... 14336 - 1 mechanical motor rotation
+//
+//if (ENCODER_M1.PreviousCapture  < 6000)
+//{
+//g_motor_status.current_mechanical_rotation--;
+//}
+//if (ENCODER_M1.PreviousCapture  > ENCODER_M1.PulseNumber - 6000)
+//{
+//g_motor_status.current_mechanical_rotation++;
+//}
+////g_motor_status.current_encoder_position = g_motor_status.current_mechanical_rotation * ENCODER_M1.PulseNumber + g_motor_status.current_mechanical_position;
+//
+//  return MC_NULL;
+//}
+
+/**
+* @brief  It calculates the rotor electrical and mechanical angle, on the basis
+*         of the instantaneous value of the timer counter.
+* @param  pHandle: handler of the current instance of the encoder component
+* @retval int16_t Measured electrical angle in s16degree format.
+*/
+//__weak int16_t ENC_CalcAngle( ENCODER_Handle_t * pHandle )
+//{
+//  int32_t wtemp1;
+//  int16_t elAngle;  /* s16degree format */
+//  int16_t mecAngle; /* s16degree format */
+//  /* PR 52926 We need to keep only the 16 LSB, bit 31 could be at 1
+//   if the overflow occurs just after the entry in the High frequency task */
+//  wtemp1 = ( int32_t )( LL_TIM_GetCounter( pHandle->TIMx ) & 0xffff ) *
+//           ( int32_t )( pHandle->U32MAXdivPulseNumber );
+//
+//  /*Computes and stores the rotor mechanical angle*/
+//  mecAngle = ( int16_t )( wtemp1 / 65536 );
+//
+//  int16_t hMecAnglePrev = pHandle->_Super.hMecAngle;
+//
+//  pHandle->_Super.hMecAngle = mecAngle;
+//
+//  /*Computes and stores the rotor electrical angle*/
+//  elAngle = mecAngle * pHandle->_Super.bElToMecRatio;
+//
+//  pHandle->_Super.hElAngle = elAngle;
+//
+//  int16_t hMecSpeedDpp = mecAngle - hMecAnglePrev;
+//  pHandle->_Super.wMecAngle += (int32_t)(hMecSpeedDpp);
+//
+//  /*Returns rotor electrical angle*/
+//  return ( elAngle );
+//}
 
 uint16_t NTC_SetFaultState( NTC_Handle_t * pHandle )
 {
@@ -2647,6 +2766,7 @@ void MA730_WriteRegister(uint8_t reg_number, uint8_t reg_value) {
 // SPEED XXXXX - set speed
 // MULTITURN 1/0 - disabling rotation constrains
 // MA730 1/0
+// GETDATA
 
 //void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 //	//HAL_StatusTypeDef status;
