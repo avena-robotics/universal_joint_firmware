@@ -168,8 +168,8 @@ typedef struct {
 typedef struct {
 	int16_t goal;
 	int16_t last_goal;
-//	double  goal_motor_torque_in_nm;
-//	double  goal_joint_torque_in_nm;
+	double  goal_motor_torque_in_nm;
+	double  goal_joint_torque_in_nm;
 	Motor_Mode_t mode;
 	Motor_State_t state;
 } __attribute__ ((packed)) MotorCommand_t;
@@ -216,19 +216,17 @@ typedef struct {
 	int16_t previous_electric_position;
 	double current_joint_position_in_rad;
 
-//	int16_t current_motor_speed_in_int;
-
-//	double  current_motor_speed_in_rads;
-
 	double  current_joint_speed_in_rads;
 
-	int16_t current_torque;
+	int16_t current_motor_torque;
+	double  current_motor_torque_in_nm;
+	double  current_joint_torque_in_nm;
 
 	uint8_t current_temperature;
 	double  current_voltage;
 
 	uint16_t current_ma730_value;
-//	uint16_t previous_ma730_value;
+
 	bool     ma730_is_running;
 
 	uint8_t errors;
@@ -1264,15 +1262,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //			g_motor_command.goal_motor_torque_in_nm	= (((double) g_motor_command.goal_torque) / 32768.0) * MAX_READABLE_CURRENT * 0.1118;
 //			g_motor_command.goal_joint_torque_in_nm	= g_motor_command.goal_motor_torque_in_nm * g_joint_configuration.gear_ratio;
 
+			g_motor_command.goal_motor_torque_in_nm = g_motor_command.goal_joint_torque_in_nm / g_joint_configuration.gear_ratio;
+			g_motor_command.goal					= (((double) g_motor_command.goal_motor_torque_in_nm) * 32768.0) / (33.0 * 0.1118);
+
 			// CURRENT TORQUE
 			double temp_torque = 0;
 			for (int i = 0; i < CURRENT_TORQUE_DATA_SIZE; i++)
 			{
 				temp_torque += (double) g_motor_status._current_torque_data[i];
 			}
-			g_motor_status.current_torque 				= (int16_t) (temp_torque / CURRENT_TORQUE_DATA_SIZE);
-//			g_motor_status.current_motor_torque_in_nm	= (((double) g_motor_status.current_torque) / 32768.0) * MAX_READABLE_CURRENT * 0.1118;
-//			g_motor_status.current_joint_torque_in_nm	= g_motor_status.current_motor_torque_in_nm * g_joint_configuration.gear_ratio;
+			g_motor_status.current_motor_torque 		= (int16_t) (temp_torque / CURRENT_TORQUE_DATA_SIZE);
+			g_motor_status.current_motor_torque_in_nm	= (((double) g_motor_status.current_motor_torque) / 32768.0) * 33.0 * 0.1118;
+			g_motor_status.current_joint_torque_in_nm	= g_motor_status.current_motor_torque_in_nm * g_joint_configuration.gear_ratio;
 
 			// CURRENT SPEED
 //			int32_t temp_speed = 0;
@@ -2366,7 +2367,7 @@ void motor_stop()
 				g_motor_status._current_torque_data[i] = 0;
 			}
 
-			g_motor_status.current_torque = 0;
+			g_motor_status.current_motor_torque = 0;
 
 		    MC_StopMotor1();
 
@@ -2375,7 +2376,7 @@ void motor_stop()
 
 bool motor_reach_torque_limit()
 {
-	if (g_motor_status.current_torque > 2000 && g_motor_status.stm_state_motor == RUN) return true;
+	if (g_motor_status.current_motor_torque > 2000 && g_motor_status.stm_state_motor == RUN) return true;
 
 	return false;
 }
@@ -2536,15 +2537,19 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan1, uint32_t RxFifo0ITs
 
 		if (g_can_rx_header.Identifier == 0x0AA)
 		{
-			g_motor_command.goal  = g_can_rx_data[g_node_status.can_node_id * 3] << 8;
-			g_motor_command.goal += g_can_rx_data[g_node_status.can_node_id * 3 + 1];
+			int16_t goal;
+			goal  = g_can_rx_data[g_node_status.can_node_id * 3] << 8;
+			goal += g_can_rx_data[g_node_status.can_node_id * 3 + 1];
+
+			g_motor_command.goal_joint_torque_in_nm = ((double) goal * 256.0) / (double) INT16_MAX; // convert from int16 to double
+
 			uint8_t temp_new_fsm_state   = g_can_rx_data[g_node_status.can_node_id * 3 + 2];
 
 			if (FSM_Get_State() != temp_new_fsm_state) {
 				FSM_Set_State(temp_new_fsm_state);
 			}
 
-			int16_t l_current_torque = g_motor_status.current_torque;
+			int16_t l_current_torque = (g_motor_status.current_joint_torque_in_nm / 256.0) * (double) INT16_MAX;
 			if (g_motor_command.goal < 0)
 			{
 				l_current_torque = -l_current_torque;
@@ -2563,10 +2568,10 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan1, uint32_t RxFifo0ITs
 //				g_motor_status.warnings = g_motor_status.warnings & (0xFF ^ JOINT_POSITION_NOT_ACCURATE);
 			}
 
-			int16_t l_joint_position_in_s16degree = (int16_t) (g_motor_status.current_joint_position_in_rad * (65536.0 / M_TWOPI));
+			int16_t l_joint_position_in_s16degree = (int16_t) (g_motor_status.current_joint_position_in_rad * (65535.0 / M_TWOPI));
 			g_can_tx_data[0] 	= l_joint_position_in_s16degree >> 8;
 			g_can_tx_data[1] 	= l_joint_position_in_s16degree;
-			int16_t speed = g_motor_status.current_joint_speed_in_rads * 32767.0 / M_TWOPI;
+			int16_t speed = g_motor_status.current_joint_speed_in_rads * (double) INT16_MAX / M_TWOPI;
 
 			g_can_tx_data[2] 	= speed >> 8;
 			g_can_tx_data[3] 	= speed;
