@@ -207,18 +207,21 @@ int main(void)
 //	    HAL_I2C_Master_Transmit(&hi2c3, 0b10001110, &register_pointer, 1, 100);
 //	    HAL_I2C_Master_Receive(&hi2c3,  0b10001110, &g_reg_8, sizeof(g_reg_1), 100);
 //
-////		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 1, 1, &g_reg_1, sizeof(g_reg_1), HAL_MAX_DELAY);
-////		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 2, 1, &g_reg_2, sizeof(g_reg_1), HAL_MAX_DELAY);
-////		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 7, 1, &g_reg_7, sizeof(g_reg_1), HAL_MAX_DELAY);
-////		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 8, 1, &g_reg_8, sizeof(g_reg_1), HAL_MAX_DELAY);
-////		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 9, 1, &g_reg_9, sizeof(g_reg_1), HAL_MAX_DELAY);
-////		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 0xA, 1, &g_reg_A, sizeof(g_reg_1), HAL_MAX_DELAY);
-////		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 0xB, 1, &g_reg_B, sizeof(g_reg_1), HAL_MAX_DELAY);
-////		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 0XC, 1, &g_reg_C, sizeof(g_reg_1), HAL_MAX_DELAY);
-////		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 0x80, 1, &g_reg_80, sizeof(g_reg_1), HAL_MAX_DELAY);
+//		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 1, 1, &g_reg_1, sizeof(g_reg_1), HAL_MAX_DELAY);
+//		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 2, 1, &g_reg_2, sizeof(g_reg_1), HAL_MAX_DELAY);
+//		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 7, 1, &g_reg_7, sizeof(g_reg_1), HAL_MAX_DELAY);
+//		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 8, 1, &g_reg_8, sizeof(g_reg_1), HAL_MAX_DELAY);
+//		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 9, 1, &g_reg_9, sizeof(g_reg_1), HAL_MAX_DELAY);
+//		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 0xA, 1, &g_reg_A, sizeof(g_reg_1), HAL_MAX_DELAY);
+//		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 0xB, 1, &g_reg_B, sizeof(g_reg_1), HAL_MAX_DELAY);
+//		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 0XC, 1, &g_reg_C, sizeof(g_reg_1), HAL_MAX_DELAY);
+//		HAL_I2C_Mem_Read(&hi2c3, 0b10001110, 0x80, 1, &g_reg_80, sizeof(g_reg_1), 100);
 //
-//	    g_gd_nfault = (HAL_GPIO_ReadPin(GPIOE, GD_NFAULT_Pin) == GPIO_PIN_RESET) ? (0) : (1);
-//	    g_gd_ready = (HAL_GPIO_ReadPin(GPIOE, GD_READY_Pin) == GPIO_PIN_RESET) ? (0) : (1);
+//		g_reg_9 = 255;
+//		HAL_I2C_Mem_Write(&hi2c3, 0b10001110, 9, 1, &g_reg_9, 1, 100);
+//		HAL_StatusTypeDef HAL_I2C_Mem_Write(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint16_t MemAddress,uint16_t MemAddSize, uint8_t *pData, uint16_t Size, uint32_t Timeout)
+		g_gd_nfault = (HAL_GPIO_ReadPin(GPIOE, GD_NFAULT_Pin) == GPIO_PIN_RESET) ? (0) : (1);
+	    g_gd_ready = (HAL_GPIO_ReadPin(GPIOE, GD_READY_Pin) == GPIO_PIN_RESET) ? (0) : (1);
 //
 		g_counter++;
   }
@@ -1007,6 +1010,26 @@ int32_t MCM_Sqrt( int32_t wInput )
 
 	return ( wtemprootnew );
 }
+
+//uint16_t NTC_SetFaultState( NTC_Handle_t * pHandle )
+//{
+//  uint16_t hFault;
+//
+////  if ( pHandle->hAvTemp_d > pHandle->hOverTempThreshold )
+////  {
+////    hFault = MC_OVER_TEMP;
+////  }
+////  else if ( pHandle->hAvTemp_d < pHandle->hOverTempDeactThreshold )
+////  {
+//    hFault = MC_NO_ERROR;
+////  }
+////  else
+////  {
+////    hFault = pHandle->hFaultState;
+////  }
+//  return hFault;
+//}
+
 /* USER CODE END 4 */
 
 /**

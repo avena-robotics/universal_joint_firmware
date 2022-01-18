@@ -172,11 +172,11 @@ int main(void)
 		g_previous_mechanical_position = g_current_mechanical_position; // store old position
 		g_current_mechanical_position = ENCODER_M1.PreviousCapture; // 0 ... 14336 - 1 mechanical motor rotation
 
-		if (g_previous_mechanical_position > ENCODER_M1.PulseNumber - 4000 && g_current_mechanical_position  < 4000)
+		if (g_previous_mechanical_position > ENCODER_M1.PulseNumber - 2000 && g_current_mechanical_position  < 2000)
 		{
 			g_current_mechanical_rotation++;
 		}
-		if (g_current_mechanical_position  > ENCODER_M1.PulseNumber - 4000 && g_previous_mechanical_position < 4000)
+		if (g_current_mechanical_position  > ENCODER_M1.PulseNumber - 2000 && g_previous_mechanical_position < 2000)
 		{
 			g_current_mechanical_rotation--;
 		}
@@ -184,7 +184,7 @@ int main(void)
 		g_current_encoder_position = g_current_mechanical_rotation * ENCODER_M1.PulseNumber + g_current_mechanical_position;
 
 		g_current_encoder_position_in_rad = M_TWOPI * (float) g_current_encoder_position / ENCODER_M1.PulseNumber;
-		g_current_joint_position_in_rad = fmod(g_current_encoder_position_in_rad / 121, M_TWOPI) - M_PI;
+		g_current_joint_position_in_rad = fmod(g_current_encoder_position_in_rad / 121.0, M_TWOPI) - M_PI;
 
 //		MA730_ReadAngle();
 		MA730_ReadRegister(0x1b);
