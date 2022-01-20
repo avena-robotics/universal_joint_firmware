@@ -165,8 +165,15 @@ int main(void)
 		g_stm_state_motor 		= MC_GetSTMStateMotor1();
 		g_mc_current_faults_motor 	= MC_GetCurrentFaultsMotor1();
 		g_mc_occured_faults_motor 	= MC_GetOccurredFaultsMotor1();
-		MC_ProgramSpeedRampMotor1(g_goal, 0);
-		MC_StartMotor1();
+		if (g_goal == 0)
+		{
+			MC_StopMotor1();
+		}
+		else
+		{
+			MC_ProgramSpeedRampMotor1(g_goal, 0);
+			MC_StartMotor1();
+		}
 
 		// READ POSITION
 		g_previous_mechanical_position = g_current_mechanical_position; // store old position
