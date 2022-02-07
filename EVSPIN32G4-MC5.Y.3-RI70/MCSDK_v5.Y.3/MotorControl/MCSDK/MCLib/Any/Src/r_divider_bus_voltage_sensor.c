@@ -211,11 +211,11 @@ __weak uint16_t RVBS_CheckFaultState( RDivider_Handle_t * pHandle )
 
   if ( pHandle->_Super.AvBusVoltage_d > pHandle->OverVoltageThreshold )
   {
-    fault = MC_OVER_VOLT;
+//    fault = MC_OVER_VOLT;
   }
   else if ( pHandle->_Super.AvBusVoltage_d < pHandle->UnderVoltageThreshold )
   {
-    fault = MC_UNDER_VOLT;
+//    fault = MC_UNDER_VOLT;
   }
   else
   {

@@ -105,7 +105,7 @@ typedef enum
 #define AUX_SENSOR_M1  eNO_SENSOR
 #define TOPOLOGY_M1 0
 #define FOC_RATE_M1 1
-#define PWM_FREQ_M1 2000
+#define PWM_FREQ_M1 24000
 
 extern const char FIRMWARE_NAME[];
 extern const char CTL_BOARD[];

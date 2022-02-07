@@ -58,11 +58,11 @@
 /**************************    DRIVE SETTINGS SECTION   **********************/
 /* PWM generation and current reading */
 
-#define PWM_FREQUENCY   2000
+#define PWM_FREQUENCY   24000
 #define PWM_FREQ_SCALING 1
 
 #define LOW_SIDE_SIGNALS_ENABLING        LS_PWM_TIMER
-#define SW_DEADTIME_NS                   2000 /*!< Dead-time to be inserted
+#define SW_DEADTIME_NS                   1400 /*!< Dead-time to be inserted
                                                            by FW, only if low side
                                                            signals are enabled */
 
@@ -71,18 +71,18 @@
                                                            number of PWM cycles */
 /* Gains values for torque and flux control loops */
 #define PID_TORQUE_KP_DEFAULT         3031
-#define PID_TORQUE_KI_DEFAULT         2190
+#define PID_TORQUE_KI_DEFAULT         1460
 #define PID_TORQUE_KD_DEFAULT         100
 #define PID_FLUX_KP_DEFAULT           3031
-#define PID_FLUX_KI_DEFAULT           2190
+#define PID_FLUX_KI_DEFAULT           1460
 #define PID_FLUX_KD_DEFAULT           100
 
 /* Torque/Flux control loop gains dividers*/
 #define TF_KPDIV                      1024
-#define TF_KIDIV                      2048
+#define TF_KIDIV                      16384
 #define TF_KDDIV                      8192
 #define TF_KPDIV_LOG                  LOG2(1024)
-#define TF_KIDIV_LOG                  LOG2(2048)
+#define TF_KIDIV_LOG                  LOG2(16384)
 #define TF_KDDIV_LOG                  LOG2(8192)
 #define TFDIFFERENTIAL_TERM_ENABLING  DISABLE
 

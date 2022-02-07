@@ -1508,7 +1508,7 @@ __weak uint16_t R3_2_IsOverCurrentOccurred( PWMC_Handle_t * pHdl )
 
   if ( pHandle->OverCurrentFlag == true )
   {
-    retVal |= MC_BREAK_IN;
+//    retVal |= MC_BREAK_IN;
     pHandle->OverCurrentFlag = false;
   }
 

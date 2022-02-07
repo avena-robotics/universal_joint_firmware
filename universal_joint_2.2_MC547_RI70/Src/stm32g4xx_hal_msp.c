@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -111,13 +111,14 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
     /**ADC1 GPIO Configuration
+    PA0     ------> ADC1_IN1
     PA1     ------> ADC1_IN2
     PB11     ------> ADC1_IN14
     */
-    GPIO_InitStruct.Pin = M1_CURR_AMPL_U_Pin;
+    GPIO_InitStruct.Pin = M1_BUS_VOLTAGE_Pin|M1_CURR_AMPL_U_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(M1_CURR_AMPL_U_GPIO_Port, &GPIO_InitStruct);
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
     GPIO_InitStruct.Pin = M1_CURR_AMPL_V_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
@@ -142,12 +143,11 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
     /**ADC2 GPIO Configuration
-    PA0     ------> ADC2_IN1
     PA5     ------> ADC2_IN13
     PA6     ------> ADC2_IN3
     PB11     ------> ADC2_IN14
     */
-    GPIO_InitStruct.Pin = M1_BUS_VOLTAGE_Pin|M1_TEMPERATURE_Pin|M1_CURR_AMPL_W_Pin;
+    GPIO_InitStruct.Pin = M1_TEMPERATURE_Pin|M1_CURR_AMPL_W_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -184,10 +184,11 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
     }
 
     /**ADC1 GPIO Configuration
+    PA0     ------> ADC1_IN1
     PA1     ------> ADC1_IN2
     PB11     ------> ADC1_IN14
     */
-    HAL_GPIO_DeInit(M1_CURR_AMPL_U_GPIO_Port, M1_CURR_AMPL_U_Pin);
+    HAL_GPIO_DeInit(GPIOA, M1_BUS_VOLTAGE_Pin|M1_CURR_AMPL_U_Pin);
 
     HAL_GPIO_DeInit(M1_CURR_AMPL_V_GPIO_Port, M1_CURR_AMPL_V_Pin);
 
@@ -216,12 +217,11 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
     }
 
     /**ADC2 GPIO Configuration
-    PA0     ------> ADC2_IN1
     PA5     ------> ADC2_IN13
     PA6     ------> ADC2_IN3
     PB11     ------> ADC2_IN14
     */
-    HAL_GPIO_DeInit(GPIOA, M1_BUS_VOLTAGE_Pin|M1_TEMPERATURE_Pin|M1_CURR_AMPL_W_Pin);
+    HAL_GPIO_DeInit(GPIOA, M1_TEMPERATURE_Pin|M1_CURR_AMPL_W_Pin);
 
     HAL_GPIO_DeInit(M1_CURR_AMPL_V_GPIO_Port, M1_CURR_AMPL_V_Pin);
 
@@ -539,19 +539,26 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* htim)
     PA9     ------> TIM1_CH2
     PA10     ------> TIM1_CH3
     */
-    GPIO_InitStruct.Pin = M1_PWM_UL_Pin|M1_PWM_UH_Pin|M1_PWM_VH_Pin|M1_PWM_WH_Pin;
+    GPIO_InitStruct.Pin = M1_PWM_UL_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF6_TIM1;
+    HAL_GPIO_Init(M1_PWM_UL_GPIO_Port, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = M1_PWM_VL_Pin|M1_PWM_WL_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF6_TIM1;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = M1_PWM_UH_Pin|M1_PWM_VH_Pin|M1_PWM_WH_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_PULLDOWN;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF6_TIM1;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-    GPIO_InitStruct.Pin = M1_PWM_VL_Pin|M1_PWM_WL_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF6_TIM1;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* USER CODE BEGIN TIM1_MspPostInit 1 */
 

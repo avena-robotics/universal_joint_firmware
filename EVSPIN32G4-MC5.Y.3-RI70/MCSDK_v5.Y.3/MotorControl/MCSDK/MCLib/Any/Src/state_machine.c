@@ -245,7 +245,7 @@ __weak bool STM_NextState( STM_Handle_t * pHandle, State_t bState )
             || ( bState == ANY_STOP ) ) )
     {
       /* If new state is not a user command START/STOP raise a software error */
-      STM_FaultProcessing( pHandle, MC_SW_ERROR, 0u );
+//      STM_FaultProcessing( pHandle, MC_SW_ERROR, 0u );
     }
   }
 
