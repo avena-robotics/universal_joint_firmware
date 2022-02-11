@@ -128,6 +128,7 @@ void TIMx_BRK_M1_IRQHandler(void)
 {
   /* USER CODE BEGIN TIMx_BRK_M1_IRQn 0 */
 
+//	g_counter2++;
   /* USER CODE END TIMx_BRK_M1_IRQn 0 */
   if (LL_TIM_IsActiveFlag_BRK(TIM1))
   {

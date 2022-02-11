@@ -40,7 +40,6 @@
 #include "circle_limitation.h"
 
 /* USER CODE BEGIN Additional include */
-
 /* USER CODE END Additional include */
 extern PID_Handle_t PIDSpeedHandle_M1;
 extern PID_Handle_t PIDIqHandle_M1;
@@ -67,6 +66,7 @@ extern NTC_Handle_t *pTemperatureSensor[NBR_OF_MOTORS];
 extern PQD_MotorPowMeas_Handle_t *pMPM[NBR_OF_MOTORS];
 extern STSPIN32G4_HandleTypeDef HdlSTSPING4;
 /* USER CODE BEGIN Additional extern */
+extern volatile uint32_t g_counter2;
 
 /* USER CODE END Additional extern */
 
