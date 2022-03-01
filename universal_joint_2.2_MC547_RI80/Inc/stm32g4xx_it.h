@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -48,9 +48,11 @@
 
 /* Exported functions prototypes ---------------------------------------------*/
 void DMA1_Channel1_IRQHandler(void);
+void DMA1_Channel2_IRQHandler(void);
 void FDCAN1_IT0_IRQHandler(void);
 void SPI2_IRQHandler(void);
 void TIM6_DAC_IRQHandler(void);
+void TIM7_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
@@ -60,3 +62,5 @@ void TIM6_DAC_IRQHandler(void);
 #endif
 
 #endif /* __STM32G4xx_IT_H */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

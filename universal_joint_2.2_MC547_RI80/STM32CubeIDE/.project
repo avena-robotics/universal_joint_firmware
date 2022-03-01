@@ -36,6 +36,31 @@
 			<locationURI>PARENT-1-PROJECT_LOC/universal_joint_2.2_MC547_RI80.ioc</locationURI>
 		</link>
 		<link>
+			<name>Application/User/adc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/adc.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/cordic.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/cordic.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/dma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/dma.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/fdcan.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/fdcan.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/gpio.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/gpio.c</locationURI>
+		</link>
+		<link>
 			<name>Application/User/main.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/main.c</locationURI>
@@ -86,6 +111,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/regular_conversion_manager.c</locationURI>
 		</link>
 		<link>
+			<name>Application/User/spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/spi.c</locationURI>
+		</link>
+		<link>
 			<name>Application/User/stm32g4xx_hal_msp.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/stm32g4xx_hal_msp.c</locationURI>
@@ -101,9 +131,19 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/stm32g4xx_mc_it.c</locationURI>
 		</link>
 		<link>
+			<name>Application/User/tim.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/tim.c</locationURI>
+		</link>
+		<link>
 			<name>Application/User/ui_task.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/ui_task.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/usart.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/usart.c</locationURI>
 		</link>
 		<link>
 			<name>Application/User/user_interface.c</name>

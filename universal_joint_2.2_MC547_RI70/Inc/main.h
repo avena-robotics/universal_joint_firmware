@@ -29,6 +29,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32g4xx_hal.h"
+
 #include "motorcontrol.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -51,8 +52,6 @@ extern "C" {
 
 /* USER CODE END EM */
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -65,8 +64,6 @@ void Error_Handler(void);
 #define DIP2_GPIO_Port GPIOC
 #define DIP1_Pin GPIO_PIN_14
 #define DIP1_GPIO_Port GPIOC
-#define SEC_IN_Pin GPIO_PIN_15
-#define SEC_IN_GPIO_Port GPIOC
 #define M1_BUS_VOLTAGE_Pin GPIO_PIN_0
 #define M1_BUS_VOLTAGE_GPIO_Port GPIOA
 #define M1_CURR_AMPL_U_Pin GPIO_PIN_1
@@ -107,10 +104,33 @@ void Error_Handler(void);
 #define M1_ENCODER_A_GPIO_Port GPIOB
 #define M1_ENCODER_B_Pin GPIO_PIN_7
 #define M1_ENCODER_B_GPIO_Port GPIOB
-#define SEC_OUT_Pin GPIO_PIN_9
-#define SEC_OUT_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
+#ifndef  M_PI
+#define  M_PI  3.141592653589793238462643383279502884196 /* pi */
+#endif
+#ifndef  M_TWOPI
+#define  M_TWOPI  6.2831853071795862319959 /* 2*pi */
+#endif
 
+#define CURRENT_TORQUE_DATA_SIZE (uint8_t) 10
+#define CURRENT_SPEED_DATA_SIZE (uint8_t) 10
+
+// ERRORRS
+#define  JOINT_NO_ERROR  						(uint8_t)(0x00u)      /**< @brief No error.*/
+#define  JOINT_POSITION_ENCODER_FAILED  		(uint8_t)(0x01u)
+#define  JOINT_MC_FAILED  						(uint8_t)(0x02u)
+#define  JOINT_JOINT_SPEED_TO_HIGH  			(uint8_t)(0x04u)
+#define  JOINT_NOT_CALIBRATED_YET				(uint8_t)(0x08u)
+
+// WARNINGS
+#define  JOINT_NO_WARNING  						(uint8_t)(0x00u)      /**< @brief No error.*/
+#define  JOINT_POSITION_NOT_ACCURATE			(uint8_t)(0x01u)
+#define  JOINT_OUTSIDE_WORKING_AREA				(uint8_t)(0x02u)
+#define  JOINT_MA730_NOT_PROPER_MAGNETOC_FIELD	(uint8_t)(0x02u)
+
+#define KT									(float) 0.1118
+#define MAX_READABLE_CURRENT					(float) 33.0
+#define MAX_TORQUE_THROUGH_CAN					(float) 360.0
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

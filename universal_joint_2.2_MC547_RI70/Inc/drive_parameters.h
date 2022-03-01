@@ -58,23 +58,23 @@
 /**************************    DRIVE SETTINGS SECTION   **********************/
 /* PWM generation and current reading */
 
-#define PWM_FREQUENCY   24000
+#define PWM_FREQUENCY   30000
 #define PWM_FREQ_SCALING 1
 
 #define LOW_SIDE_SIGNALS_ENABLING        LS_PWM_TIMER
-#define SW_DEADTIME_NS                   1600 /*!< Dead-time to be inserted
+#define SW_DEADTIME_NS                   800 /*!< Dead-time to be inserted
                                                            by FW, only if low side
                                                            signals are enabled */
 
 /* Torque and flux regulation loops */
-#define REGULATION_EXECUTION_RATE     4    /*!< FOC execution rate in
+#define REGULATION_EXECUTION_RATE     1    /*!< FOC execution rate in
                                                            number of PWM cycles */
 /* Gains values for torque and flux control loops */
 #define PID_TORQUE_KP_DEFAULT         3503
-#define PID_TORQUE_KI_DEFAULT         394
+#define PID_TORQUE_KI_DEFAULT         79
 #define PID_TORQUE_KD_DEFAULT         100
 #define PID_FLUX_KP_DEFAULT           3503
-#define PID_FLUX_KI_DEFAULT           394
+#define PID_FLUX_KI_DEFAULT           79
 #define PID_FLUX_KD_DEFAULT           100
 
 /* Torque/Flux control loop gains dividers*/
@@ -119,7 +119,7 @@
 /**************************    FIRMWARE PROTECTIONS SECTION   *****************/
 #define OV_VOLTAGE_PROT_ENABLING        ENABLE
 #define UV_VOLTAGE_PROT_ENABLING        ENABLE
-#define OV_VOLTAGE_THRESHOLD_V          56 /*!< Over-voltage
+#define OV_VOLTAGE_THRESHOLD_V          75 /*!< Over-voltage
                                                          threshold */
 #define UD_VOLTAGE_THRESHOLD_V          20 /*!< Under-voltage
                                                           threshold */
@@ -128,7 +128,7 @@
                                                          TURN_ON_R_BRAKE or
                                                          TURN_ON_LOW_SIDES */
 #endif /* 0 */
-#define R_BRAKE_SWITCH_OFF_THRES_V      45
+#define R_BRAKE_SWITCH_OFF_THRES_V      60
 
 #define OV_TEMPERATURE_THRESHOLD_C      80 /*!< Celsius degrees */
 #define OV_TEMPERATURE_HYSTERESIS_C     10 /*!< Celsius degrees */
@@ -141,9 +141,9 @@
                                                           power stage) */
 /******************************   START-UP PARAMETERS   **********************/
 /* Encoder alignment */
-#define ALIGNMENT_DURATION              1000 /*!< milliseconds */
+#define ALIGNMENT_DURATION              700 /*!< milliseconds */
 #define ALIGNMENT_ANGLE_DEG             90 /*!< degrees [0...359] */
-#define FINAL_I_ALIGNMENT               3971 /*!< s16A */
+#define FINAL_I_ALIGNMENT               1936 /*!< s16A */
 // With ALIGNMENT_ANGLE_DEG equal to 90 degrees final alignment
 // phase current = (FINAL_I_ALIGNMENT * 1.65/ Av)/(32767 * Rshunt)
 // being Av the voltage gain between Rshunt and A/D input

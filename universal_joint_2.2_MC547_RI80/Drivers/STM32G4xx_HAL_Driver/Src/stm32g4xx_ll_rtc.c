@@ -6,12 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2019 STMicroelectronics.
-  * All rights reserved.
+  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
   *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -329,7 +329,7 @@ ErrorStatus LL_RTC_TIME_Init(RTC_TypeDef *RTCx, uint32_t RTC_Format, LL_RTC_Time
     }
 
     /* Exit Initialization mode */
-    LL_RTC_DisableInitMode(RTCx);
+    LL_RTC_DisableInitMode(RTC);
 
     /* If  RTC_CR_BYPSHAD bit = 0, wait for synchro else this check is not needed */
     if (LL_RTC_IsShadowRegBypassEnabled(RTCx) == 0U)
@@ -417,7 +417,7 @@ ErrorStatus LL_RTC_DATE_Init(RTC_TypeDef *RTCx, uint32_t RTC_Format, LL_RTC_Date
     }
 
     /* Exit Initialization mode */
-    LL_RTC_DisableInitMode(RTCx);
+    LL_RTC_DisableInitMode(RTC);
 
     /* If  RTC_CR_BYPSHAD bit = 0, wait for synchro else this check is not needed */
     if (LL_RTC_IsShadowRegBypassEnabled(RTCx) == 0U)
@@ -880,3 +880,5 @@ ErrorStatus LL_RTC_WaitForSynchro(RTC_TypeDef *RTCx)
   */
 
 #endif /* USE_FULL_LL_DRIVER */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -119,7 +119,7 @@
 /**************************    FIRMWARE PROTECTIONS SECTION   *****************/
 #define OV_VOLTAGE_PROT_ENABLING        ENABLE
 #define UV_VOLTAGE_PROT_ENABLING        ENABLE
-#define OV_VOLTAGE_THRESHOLD_V          56 /*!< Over-voltage
+#define OV_VOLTAGE_THRESHOLD_V          75 /*!< Over-voltage
                                                          threshold */
 #define UD_VOLTAGE_THRESHOLD_V          20 /*!< Under-voltage
                                                           threshold */
@@ -128,7 +128,7 @@
                                                          TURN_ON_R_BRAKE or
                                                          TURN_ON_LOW_SIDES */
 #endif /* 0 */
-#define R_BRAKE_SWITCH_OFF_THRES_V      45
+#define R_BRAKE_SWITCH_OFF_THRES_V      60
 
 #define OV_TEMPERATURE_THRESHOLD_C      80 /*!< Celsius degrees */
 #define OV_TEMPERATURE_HYSTERESIS_C     10 /*!< Celsius degrees */

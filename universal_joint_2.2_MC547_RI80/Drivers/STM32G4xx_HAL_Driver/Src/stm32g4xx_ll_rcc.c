@@ -6,12 +6,14 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2019 STMicroelectronics.
-  * All rights reserved.
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * This software is licensed under terms that can be found in the LICENSE file in
-  * the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
   ******************************************************************************
   */
 #if defined(USE_FULL_LL_DRIVER)
@@ -655,10 +657,7 @@ uint32_t LL_RCC_GetSAIClockFreq(uint32_t SAIxSource)
       case LL_RCC_SAI1_CLKSOURCE_PLL:        /* PLL clock used as SAI1 clock source */
         if (LL_RCC_PLL_IsReady() != 0U)
         {
-          if (LL_RCC_PLL_IsEnabledDomain_48M() != 0U)
-          {
-            sai_frequency = RCC_PLL_GetFreqDomain_48M();
-          }
+          sai_frequency = RCC_PLL_GetFreqDomain_48M();
         }
         break;
 
@@ -706,10 +705,7 @@ uint32_t LL_RCC_GetI2SClockFreq(uint32_t I2SxSource)
       case LL_RCC_I2S_CLKSOURCE_PLL:    /* I2S Clock is PLL"Q" */
       if (LL_RCC_PLL_IsReady() != 0U)
       {
-        if (LL_RCC_PLL_IsEnabledDomain_48M() != 0U)
-        {
-          i2s_frequency = RCC_PLL_GetFreqDomain_48M();
-        }
+        i2s_frequency = RCC_PLL_GetFreqDomain_48M();
       }
       break;
 
@@ -759,10 +755,7 @@ uint32_t LL_RCC_GetFDCANClockFreq(uint32_t FDCANxSource)
     case LL_RCC_FDCAN_CLKSOURCE_PLL:   /* PLL clock used as FDCAN kernel clock */
       if (LL_RCC_PLL_IsReady() != 0U)
       {
-        if (LL_RCC_PLL_IsEnabledDomain_48M() != 0U)
-        {
-          fdcan_frequency = RCC_PLL_GetFreqDomain_48M();
-        }
+        fdcan_frequency = RCC_PLL_GetFreqDomain_48M();
       }
       break;
 
@@ -799,10 +792,7 @@ uint32_t LL_RCC_GetRNGClockFreq(uint32_t RNGxSource)
     case LL_RCC_RNG_CLKSOURCE_PLL:           /* PLL clock used as RNG clock source */
       if (LL_RCC_PLL_IsReady() != 0U)
       {
-        if (LL_RCC_PLL_IsEnabledDomain_48M() != 0U)
-        {
-          rng_frequency = RCC_PLL_GetFreqDomain_48M();
-        }
+        rng_frequency = RCC_PLL_GetFreqDomain_48M();
       }
       break;
 
@@ -843,10 +833,7 @@ uint32_t LL_RCC_GetUSBClockFreq(uint32_t USBxSource)
     case LL_RCC_USB_CLKSOURCE_PLL:           /* PLL clock used as USB clock source */
       if (LL_RCC_PLL_IsReady() != 0U)
       {
-        if (LL_RCC_PLL_IsEnabledDomain_48M() != 0U)
-        {
-          usb_frequency = RCC_PLL_GetFreqDomain_48M();
-        }
+        usb_frequency = RCC_PLL_GetFreqDomain_48M();
       }
       break;
 
@@ -891,10 +878,7 @@ uint32_t LL_RCC_GetADCClockFreq(uint32_t ADCxSource)
       case LL_RCC_ADC12_CLKSOURCE_PLL:       /* PLL clock used as ADC12 clock source */
         if (LL_RCC_PLL_IsReady() != 0U)
         {
-          if (LL_RCC_PLL_IsEnabledDomain_ADC() != 0U)
-          {
-            adc_frequency = RCC_PLL_GetFreqDomain_ADC();
-          }
+          adc_frequency = RCC_PLL_GetFreqDomain_ADC();
         }
         break;
 
@@ -917,10 +901,7 @@ uint32_t LL_RCC_GetADCClockFreq(uint32_t ADCxSource)
       case LL_RCC_ADC345_CLKSOURCE_PLL:       /* PLL clock used as ADC345 clock source */
         if (LL_RCC_PLL_IsReady() != 0U)
         {
-          if (LL_RCC_PLL_IsEnabledDomain_ADC() != 0U)
-          {
-            adc_frequency = RCC_PLL_GetFreqDomain_ADC();
-          }
+          adc_frequency = RCC_PLL_GetFreqDomain_ADC();
         }
         break;
 
@@ -971,10 +952,7 @@ uint32_t LL_RCC_GetQUADSPIClockFreq(uint32_t QUADSPIxSource)
     case LL_RCC_QUADSPI_CLKSOURCE_PLL:      /* PLL clock used as QUADSPI source */
       if (LL_RCC_PLL_IsReady() != 0U)
       {
-        if (LL_RCC_PLL_IsEnabledDomain_48M() != 0U)
-        {
-          quadspi_frequency = RCC_PLL_GetFreqDomain_48M();
-        }
+        quadspi_frequency = RCC_PLL_GetFreqDomain_48M();
       }
       break;
 
@@ -1170,3 +1148,4 @@ static uint32_t RCC_PLL_GetFreqDomain_48M(void)
 
 #endif /* USE_FULL_LL_DRIVER */
 
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -60,7 +60,7 @@
 					<vars>
 						<var version="1.0" type="MC_Int" name="Min dead-time" enable="true" visible="true" readonly="false" value="700" />
 						<var version="1.0" type="MC_Int" name="Max switching frequency" enable="true" visible="true" readonly="false" value="50" />
-						<var version="1.0" type="MC_Int" name="Max rated voltage" enable="true" visible="true" readonly="false" value="56" />
+						<var version="1.0" type="MC_Int" name="Max rated voltage" enable="true" visible="true" readonly="false" value="75" />
 						<var version="1.0" type="MC_Int" name="Min rated voltage" enable="true" visible="true" readonly="false" value="20" />
 						<var version="1.0" type="MC_Int" name="Nominal voltage" enable="true" visible="true" readonly="false" value="48" />
 						<var version="1.0" type="MC_Bool" name="Bus voltage sensing enable" enable="true" visible="true" readonly="false" value="true" />
@@ -454,7 +454,7 @@
 						<var version="1.0" type="MC_Bool" name="Bus voltage sensing" enable="true" visible="true" readonly="false" value="true" />
 						<var version="1.0" type="MC_Bool" name="Over-voltage" enable="true" visible="true" readonly="false" value="true" />
 						<var version="1.0" type="MC_Bool" name="Set intervention threshold to power stage max rated voltage" enable="true" visible="true" readonly="false" value="true" />
-						<var version="1.0" type="MC_Int" name="Over-voltage threshold" enable="false" visible="true" readonly="false" value="56" />
+						<var version="1.0" type="MC_Int" name="Over-voltage threshold" enable="false" visible="true" readonly="false" value="75" />
 						<var version="1.0" type="MC_List" name="On over voltage" enable="true" visible="true" readonly="false" value="2">
 							<items>
 								<item tag="0" text="Disable PWM generation" />
@@ -463,7 +463,7 @@
 							</items>
 						</var>
 						<var version="1.0" type="MC_Bool" name="On over-voltage, disable over-current protection by HW" enable="true" visible="true" readonly="false" value="false" />
-						<var version="1.0" type="MC_Int" name="Brake resistor switch-off threshold" enable="false" visible="false" readonly="false" value="45" />
+						<var version="1.0" type="MC_Int" name="Brake resistor switch-off threshold" enable="false" visible="false" readonly="false" value="60" />
 						<var version="1.0" type="MC_Bool" name="Under-voltage" enable="true" visible="true" readonly="false" value="true" />
 						<var version="1.0" type="MC_Bool" name="Set intervention threshold to power stage min rated voltage" enable="true" visible="true" readonly="false" value="true" />
 						<var version="1.0" type="MC_Int" name="Under-voltage threshold" enable="false" visible="true" readonly="false" value="20" />

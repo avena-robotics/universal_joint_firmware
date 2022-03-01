@@ -158,10 +158,10 @@
 		<define key="POSITION_CTRL_ENABLING" value="DISABLE" />
 		<define key="OV_VOLTAGE_PROT_ENABLING" value="ENABLE" />
 		<define key="UV_VOLTAGE_PROT_ENABLING" value="ENABLE" />
-		<define key="OV_VOLTAGE_THRESHOLD_V" value="56" />
+		<define key="OV_VOLTAGE_THRESHOLD_V" value="75" />
 		<define key="UD_VOLTAGE_THRESHOLD_V" value="20" />
 		<define key="ON_OVER_VOLTAGE" value="TURN_ON_LOW_SIDES" />
-		<define key="R_BRAKE_SWITCH_OFF_THRES_V" value="45" />
+		<define key="R_BRAKE_SWITCH_OFF_THRES_V" value="60" />
 		<define key="HW_OV_CURRENT_PROT_BYPASS" value="DISABLE" />
 		<define key="ALIGNMENT_DURATION" value="1000" />
 		<define key="ALIGNMENT_ANGLE_DEG" value="90" />

@@ -6,20 +6,11 @@
   *          This file provides firmware functions to manage the following
   *          functionalities of the COMP peripheral:
   *           + Initialization and de-initialization functions
+  *           + Start/Stop operation functions in polling mode
+  *           + Start/Stop operation functions in interrupt mode (through EXTI interrupt)
   *           + Peripheral control functions
   *           + Peripheral state functions
   *
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2019 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
   @verbatim
 ================================================================================
           ##### COMP Peripheral features #####
@@ -149,6 +140,18 @@
   @endverbatim
   ******************************************************************************
 
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
@@ -311,7 +314,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       /* Note: Variable divided by 2 to compensate partially              */
       /*       CPU processing cycles, scaling in us split to not          */
       /*       exceed 32 bits register capacity and handle low frequency. */
-      wait_loop_index = ((COMP_DELAY_VOLTAGE_SCALER_STAB_US / 10UL) * ((SystemCoreClock / (100000UL * 2UL)) + 1UL));
+      wait_loop_index = ((COMP_DELAY_VOLTAGE_SCALER_STAB_US / 10UL) * (SystemCoreClock / (100000UL * 2UL)));
       while(wait_loop_index != 0UL)
       {
         wait_loop_index--;
@@ -327,7 +330,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       /* Configure EXTI rising edge */
       if((hcomp->Init.TriggerMode & COMP_EXTI_RISING) != 0UL)
       {
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_EnableRisingTrig_32_63(exti_line);
@@ -338,11 +341,11 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
         }
 #else
         LL_EXTI_EnableRisingTrig_0_31(exti_line);
-#endif /* COMP7 */
+#endif
       }
       else
       {
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_DisableRisingTrig_32_63(exti_line);
@@ -353,13 +356,13 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
         }
 #else
         LL_EXTI_DisableRisingTrig_0_31(exti_line);
-#endif /* COMP7 */
+#endif
       }
 
       /* Configure EXTI falling edge */
       if((hcomp->Init.TriggerMode & COMP_EXTI_FALLING) != 0UL)
       {
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_EnableFallingTrig_32_63(exti_line);
@@ -370,11 +373,11 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
         }
 #else
         LL_EXTI_EnableFallingTrig_0_31(exti_line);
-#endif /* COMP7 */
+#endif
       }
       else
       {
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_DisableFallingTrig_32_63(exti_line);
@@ -385,11 +388,11 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
         }
 #else
         LL_EXTI_DisableFallingTrig_0_31(exti_line);
-#endif /* COMP7 */
+#endif
       }
 
       /* Clear COMP EXTI pending bit (if any) */
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
       if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
       {
         LL_EXTI_ClearFlag_32_63(exti_line);
@@ -400,12 +403,12 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       }
 #else
       LL_EXTI_ClearFlag_0_31(exti_line);
-#endif /* COMP7 */
+#endif
 
       /* Configure EXTI event mode */
       if((hcomp->Init.TriggerMode & COMP_EXTI_EVENT) != 0UL)
       {
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_EnableEvent_32_63(exti_line);
@@ -416,11 +419,11 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
         }
 #else
         LL_EXTI_EnableEvent_0_31(exti_line);
-#endif /* COMP7 */
+#endif
       }
       else
       {
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_DisableEvent_32_63(exti_line);
@@ -431,13 +434,13 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
         }
 #else
         LL_EXTI_DisableEvent_0_31(exti_line);
-#endif /* COMP7 */
+#endif
       }
 
       /* Configure EXTI interrupt mode */
       if((hcomp->Init.TriggerMode & COMP_EXTI_IT) != 0UL)
       {
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_EnableIT_32_63(exti_line);
@@ -448,11 +451,11 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
         }
 #else
         LL_EXTI_EnableIT_0_31(exti_line);
-#endif /* COMP7 */
+#endif
       }
       else
       {
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
         if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
         {
           LL_EXTI_DisableIT_32_63(exti_line);
@@ -463,13 +466,13 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
         }
 #else
         LL_EXTI_DisableIT_0_31(exti_line);
-#endif /* COMP7 */
+#endif
       }
     }
     else
     {
       /* Disable EXTI event mode */
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
       if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
       {
         LL_EXTI_DisableEvent_32_63(exti_line);
@@ -480,10 +483,10 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       }
 #else
       LL_EXTI_DisableEvent_0_31(exti_line);
-#endif /* COMP7 */
+#endif
 
       /* Disable EXTI interrupt mode */
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
       if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
       {
         LL_EXTI_DisableIT_32_63(exti_line);
@@ -494,7 +497,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
       }
 #else
       LL_EXTI_DisableIT_0_31(exti_line);
-#endif /* COMP7 */
+#endif
     }
 
     /* Set HAL COMP handle state */
@@ -877,7 +880,7 @@ void HAL_COMP_IRQHandler(COMP_HandleTypeDef *hcomp)
   uint32_t tmp_comp_exti_flag_set = 0UL;
 
   /* Check COMP EXTI flag */
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
   if((hcomp->Instance == COMP6) || (hcomp->Instance == COMP7))
   {
     if(LL_EXTI_IsActiveFlag_32_63(exti_line) != 0UL)
@@ -897,12 +900,12 @@ void HAL_COMP_IRQHandler(COMP_HandleTypeDef *hcomp)
   {
     tmp_comp_exti_flag_set = 1UL;
   }
-#endif /* COMP7 */
+#endif
 
   if(tmp_comp_exti_flag_set != 0UL)
   {
       /* Clear COMP EXTI line pending bit */
-#if defined(COMP7)
+#if defined(STM32G474xx) || defined(STM32G484xx) || defined(STM32G473xx) || defined(STM32G483xx)
       if(tmp_comp_exti_flag_set == 2UL)
       {
         LL_EXTI_ClearFlag_32_63(exti_line);
@@ -913,7 +916,7 @@ void HAL_COMP_IRQHandler(COMP_HandleTypeDef *hcomp)
       }
 #else
       LL_EXTI_ClearFlag_0_31(exti_line);
-#endif /* COMP7 */
+#endif
 
     /* COMP trigger user callback */
 #if (USE_HAL_COMP_REGISTER_CALLBACKS == 1)
@@ -1101,3 +1104,5 @@ uint32_t HAL_COMP_GetError(COMP_HandleTypeDef *hcomp)
 /**
   * @}
   */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
